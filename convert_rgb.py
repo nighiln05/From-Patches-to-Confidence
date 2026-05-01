@@ -16,7 +16,7 @@ def wav_to_rgb_spectrogram(
     cmap_name="plasma"
 ):
     """Convert one .wav file to a 224×224 RGB spectrogram PNG."""
-    # 1) Load audio
+    # 1) Load audio using librosa
     y, _ = librosa.load(wav_path, sr=sr)
 
     # 2) Log-Mel spectrogram
