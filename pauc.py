@@ -33,7 +33,7 @@ np.random.seed(SEED)
 # ─────────────────────────────────────────────────────────────────────
 
 
-# ✅ pAUC function added
+# pAUC function added
 def compute_pauc(labels, scores, max_fpr=0.1):
     try:
         return roc_auc_score(labels, scores, max_fpr=max_fpr)
@@ -318,7 +318,7 @@ def main():
             else:
                 tgt_scores_final = scores
 
-        # ✅ pAUC (source + target combined)
+        # pAUC (source + target combined)
         combined_scores = np.concatenate([src_scores_final, tgt_scores_final])
         combined_labels = np.concatenate([src_labels, tgt_labels])
 
