@@ -3,7 +3,7 @@
 ### A Dual-Attention and Confidence-Guided Approach for Domain-Adaptive Anomalous Sound Detection
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-red.svg)](https://pytorch.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-red.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
@@ -12,21 +12,21 @@
 
 This repository contains the implementation of **From Patches to Confidence: A Dual-Attention and Confidence-Guided Approach for Domain-Adaptive Anomalous Sound Detection**.
 
-The proposed approach combines:
-
-- Patch-level spatial attention
-- Temporal attention
-- Confidence-guided contrastive learning
-- Domain adaptation
-- Multi-centroid anomaly scoring
-
-The method is evaluated on the **DCASE 2023 Task 2** and **DCASE 2025 Task 2** anomalous sound detection benchmarks.
+The proposed approach performs anomalous sound detection using patch-level spatial and temporal representations with confidence-guided learning and domain adaptation.
 
 ---
 
-## Inference
+## Architecture
 
-The proposed model converts audio recordings into Mel-spectrogram representations and performs patch-level feature extraction, attention-based aggregation, and anomaly scoring.
+### Training
+
+<div align="center">
+
+<img src="assets/train_pipeline.jpeg" width="900">
+
+</div>
+
+### Inference
 
 <div align="center">
 
@@ -36,9 +36,7 @@ The proposed model converts audio recordings into Mel-spectrogram representation
 
 ---
 
-## DCASE 2025 Results
-
-Performance of the proposed approach across the seven machine types in **DCASE 2025 Task 2**.
+## DCASE 2025 Task 2 Results
 
 <div align="center">
 
@@ -46,73 +44,33 @@ Performance of the proposed approach across the seven machine types in **DCASE 2
 
 </div>
 
-### Target-Domain AUC
+### Target-Domain Performance
 
-| Machine Type | Target AUC |
-|---|---:|
-| ToyCar | 71.72 |
-| ToyTrain | 64.52 |
-| Fan | 60.08 |
-| Gearbox | 65.76 |
-| Bearing | 59.48 |
-| Slider | 54.32 |
-| Valve | 77.36 |
-
-### Target-Domain pAUC
-
-| Machine Type | pAUC |
-|---|---:|
-| ToyCar | 54.05 |
-| ToyTrain | 54.58 |
-| Fan | 53.63 |
-| Gearbox | 55.89 |
-| Bearing | 50.68 |
-| Slider | 57.74 |
-| Valve | 69.74 |
+| Machine Type | AUC | pAUC |
+|---|---:|---:|
+| ToyCar | 71.72 | 54.05 |
+| ToyTrain | 64.52 | 54.58 |
+| Fan | 60.08 | 53.63 |
+| Gearbox | 65.76 | 55.89 |
+| Bearing | 59.48 | 50.68 |
+| Slider | 54.32 | 57.74 |
+| Valve | 77.36 | 69.74 |
 
 ---
 
-## Method
+## Key Components
 
-The framework operates at both **spatial/patch** and **temporal** levels.
-
-### 1. Mel-Spectrogram Representation
-
-Audio recordings are converted into normalized Mel-spectrogram representations and processed as three-channel inputs.
-
-### 2. Patch-Level Feature Extraction
-
-Overlapping spectrogram patches are extracted and encoded using an ImageNet-pretrained **ResNet-34** backbone.
-
-### 3. Dual Attention
-
-Spatial patch representations are aggregated using attribute-conditioned attention, followed by temporal attention to capture sequential dependencies.
-
-### 4. Confidence-Guided Learning
-
-Contrastive learning and latent-space regularization are used to improve the separation between normal and anomalous representations.
-
-### 5. Domain Adaptation
-
-The model incorporates domain alignment using:
-
-- CORAL
-- MMD
-- Domain-Adversarial Training
-
-### 6. Anomaly Scoring
-
-Anomalies are detected using a combination of:
-
-- Mahalanobis distance
-- Cosine distance
-- Multi-centroid representations
+- Patch-level spatial attention
+- Temporal attention
+- Confidence-guided contrastive learning
+- Domain adaptation
+- Multi-centroid anomaly scoring
 
 ---
 
 ## Dataset
 
-Experiments are conducted on the **DCASE Task 2** anomalous sound detection benchmark covering:
+The method is evaluated on the **DCASE Task 2 Anomalous Sound Detection** benchmark across:
 
 - ToyCar
 - ToyTrain
@@ -122,27 +80,19 @@ Experiments are conducted on the **DCASE Task 2** anomalous sound detection benc
 - Slider
 - Valve
 
-Audio recordings are converted into **128-bin Mel-spectrograms** using STFT-based processing.
-
 ---
 
-## Implementation Details
+## Implementation
 
-| Parameter | Value |
-|---|---|
-| Backbone | ResNet-34 |
-| Input | 224 × 224 |
-| Mel bins | 128 |
-| Patch size | 32 × 32 |
-| Patch stride | 16 |
-| Embedding dimension | 128 |
-| Optimizer | Adam |
-| Initial learning rate | 2 × 10⁻⁴ |
-| Batch size | 96 |
-| Epochs | 150 |
-| NT-Xent temperature | 0.05 |
-| EMA momentum | 0.9 |
-| GPU | NVIDIA RTX 5060 Laptop GPU |
+- **Backbone:** ResNet-34
+- **Input:** 224 × 224 Mel-spectrogram
+- **Mel bins:** 128
+- **Patch size:** 32 × 32
+- **Patch stride:** 16
+- **Embedding dimension:** 128
+- **Optimizer:** Adam
+- **Learning rate:** 2 × 10⁻⁴
+- **Batch size:** 96
 
 ---
 
@@ -152,6 +102,7 @@ Audio recordings are converted into **128-bin Mel-spectrograms** using STFT-base
 From-Patches-to-Confidence/
 │
 ├── assets/
+│   ├── train_pipeline.jpeg
 │   ├── test_pipeline.jpeg
 │   └── dcase2025_results.png
 │
